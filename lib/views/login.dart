@@ -1,7 +1,11 @@
 import 'dart:developer';
 
+import 'package:api_di/models/login_response.dart';
+import 'package:api_di/providers/user_provider.dart';
 import 'package:api_di/services/auth.dart';
+import 'package:api_di/views/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -17,6 +21,8 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+
+    var user = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Login View"),
@@ -41,17 +47,19 @@ class _LoginViewState extends State<LoginView> {
                       .loginUser(
                           email: emailController.text,
                           password: pwdController.text)
-                      .then((val) {
-                    isLoading = false;
-                    setState(() {});
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("Message"),
-                            content: Text(val.user!.name.toString()),
-                          );
-                        });
+                      .then((loginResponse) async {
+                    await AuthServices()
+                        .getUserProfile(loginResponse.token.toString())
+                        .then((userResponse) {
+                      Provider.of<UserProvider>(context,listen: false).setUser(userResponse);
+
+                      isLoading = false;
+                      setState(() {});
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePageView()));
+                    });
                   });
                 } catch (e) {
                   isLoading = false;

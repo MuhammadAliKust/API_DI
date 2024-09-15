@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:api_di/models/login_response.dart';
 import 'package:api_di/models/register_response.dart';
+import 'package:api_di/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class AuthServices {
@@ -42,4 +43,18 @@ class AuthServices {
   }
 
   ///Get User Profile
+  Future<UserModel> getUserProfile(String token) async {
+    http.Response response = await http.get(
+      Uri.parse(
+        'https://todo-nu-plum-19.vercel.app/users/profile',
+      ),
+      headers: {'Authorization': token},
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return UserModel.fromJson(jsonDecode(response.body));
+    } else {
+      return UserModel();
+    }
+  }
 }

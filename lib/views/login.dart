@@ -43,6 +43,7 @@ class _LoginViewState extends State<LoginView> {
                 isLoading = true;
                 setState(() {});
                 try {
+
                   await AuthServices()
                       .loginUser(
                           email: emailController.text,

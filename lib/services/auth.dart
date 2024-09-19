@@ -5,6 +5,9 @@ import 'package:api_di/models/register_response.dart';
 import 'package:api_di/models/user.dart';
 import 'package:http/http.dart' as http;
 
+import '../configs/backend_configs.dart';
+import '../configs/endpoints.dart';
+
 class AuthServices {
   ///Register
   Future<RegisterResponseModel> registerUser(
@@ -13,7 +16,7 @@ class AuthServices {
       required String password}) async {
     http.Response response = await http.post(
         Uri.parse(
-          'https://todo-nu-plum-19.vercel.app/users/register',
+          BackendConfigs.kBaseUrl + EndPoints.kRegisterUser,
         ),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({"name": name, "email": email, "password": password}));

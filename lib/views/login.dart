@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:api_di/models/login_response.dart';
+import 'package:api_di/providers/token_provider.dart';
 import 'package:api_di/providers/user_provider.dart';
 import 'package:api_di/services/auth.dart';
 import 'package:api_di/views/home_page.dart';
@@ -23,6 +24,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
 
     var user = Provider.of<UserProvider>(context);
+    var tokenProvider = Provider.of<TokenProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Login View"),
@@ -53,6 +55,7 @@ class _LoginViewState extends State<LoginView> {
                         .getUserProfile(loginResponse.token.toString())
                         .then((userResponse) {
                       Provider.of<UserProvider>(context,listen: false).setUser(userResponse);
+                      Provider.of<TokenProvider>(context,listen: false).setToken(loginResponse.token.toString());
 
                       isLoading = false;
                       setState(() {});

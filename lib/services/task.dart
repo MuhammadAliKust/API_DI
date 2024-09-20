@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:api_di/configs/backend_configs.dart';
 import 'package:api_di/configs/endpoints.dart';
@@ -14,9 +15,14 @@ class TaskServices {
         Uri.parse(
           BackendConfigs.kBaseUrl + EndPoints.kAddTask,
         ),
-        headers: {'Authorization': token},
-        body: {'description': description});
+        headers: {
+          'Authorization': token,
 
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode({'description': description}));
+    log(response.request!.url.toString());
+    log(response.statusCode.toString());
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
     } else {

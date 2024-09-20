@@ -1,5 +1,7 @@
 import 'package:api_di/providers/user_provider.dart';
+import 'package:api_di/views/create_task.dart';
 import 'package:api_di/views/profile.dart';
+import 'package:api_di/views/showtask.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,8 +23,21 @@ class HomePageView extends StatelessWidget {
               icon: Icon(Icons.person))
         ],
       ),
-      body: Center(
-        child: Text(user.getUser()!.user!.name.toString()),
+      body: Column(
+        children: [
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CreateTaskView()));
+              },
+              child: Text("Create Task")),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Showtask()));
+              },
+              child: Text("Get Task")),
+        ],
       ),
     );
   }
